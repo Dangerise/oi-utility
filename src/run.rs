@@ -17,7 +17,7 @@ pub struct RunArgs {
     norun: bool,
     #[arg(short, long)]
     from_file: Option<PathBuf>,
-    #[arg(short, long)]
+    #[arg(short, long,action=ArgAction::SetTrue)]
     last_input: bool,
 }
 

@@ -89,8 +89,7 @@ pub fn check(args: CheckArgs) -> eyre::Result<()> {
             ));
         }
 
-        let input = input_result.output;
-        fs::write(&args.input, &input)?;
+        let input = fs::read_to_string("input.txt")?;
 
         println!("Running my program at {} ...", my_path.display());
         let my_output = run::run_silently(&my_path, &input)?;

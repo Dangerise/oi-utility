@@ -9,6 +9,7 @@ inline int qread() {
     bool f = 0;
     while (c < '0' || c > '9') {
         if (c == '-') {
+            f = -1;
         }
         c = getchar();
     }
