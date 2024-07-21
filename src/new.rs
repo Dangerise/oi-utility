@@ -21,7 +21,7 @@ pub fn new(args: NewArgs) -> eyre::Result<()> {
     fs::write(program, TEMPLATE)?;
 
     let std_program = path.join("std.cpp");
-    fs::write(std_program, TEMPLATE)?;
+    fs::write(std_program, "//std")?;
 
     let generator = path.join("gen.cpp");
     fs::write(generator, GEN_TEMPLATE)?;

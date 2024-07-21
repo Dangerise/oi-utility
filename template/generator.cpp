@@ -1,6 +1,4 @@
 #include <bits/stdc++.h>
-#include <cmath>
-#include <cstdio>
 using namespace std;
 
 #define int long long

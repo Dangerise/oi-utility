@@ -1,5 +1,4 @@
 use super::*;
-use std::env::consts::FAMILY;
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
