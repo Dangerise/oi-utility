@@ -10,24 +10,18 @@ pub struct RunArgs {
     source: String,
     #[arg(value_name = "EXECUTABLE")]
     executable: Option<String>,
-    #[arg(short,long,action=ArgAction::SetTrue)]
-    norun: bool,
     #[arg(short, long)]
-    from_file: Option<PathBuf>,
-    #[arg(short, long,action=ArgAction::SetTrue)]
-    last_input: bool,
+    file: Option<PathBuf>,
     #[arg(short,long,action=ArgAction::SetTrue)]
-    store: bool,
+    clipboard: bool,
 }
 
 pub fn run(args: RunArgs) -> eyre::Result<()> {
     let RunArgs {
         source,
         executable,
-        norun,
-        from_file,
-        last_input,
-        store,
+        file,
+        clipboard,
     } = args;
 
     let source = PathBuf::from(&source);
@@ -67,30 +61,17 @@ pub fn run(args: RunArgs) -> eyre::Result<()> {
 
     compile::compile(code_path, &executable)?;
 
-    if norun {
-        return Ok(());
-    }
-
-    let last_input_path = source_parent.join("last_input.txt");
-    let store_path = source_parent.join("store.txt");
-    let from_store = store_path.exists() && !store;
-    let input = match (from_store, last_input) {
-        (true, false) => fs::read_to_string(&store_path)?,
-        (_, true) => fs::read_to_string(last_input_path)?,
-        (false, false) => {
-            let input = if let Some(file_path) = from_file {
-                fs::read_to_string(file_path)?
-            } else {
-                clipboard::get_clipboard()?
-            };
-            fs::write(last_input_path, &input)?;
-            input
+    let input = match (clipboard, file) {
+        (true, None) => clipboard::get_clipboard()?,
+        (false, Some(path)) => fs::read_to_string(path)?,
+        (false, None) => {
+            let store_path = source_parent.join("store.txt");
+            fs::read_to_string(store_path)?
+        }
+        _ => {
+            unreachable!()
         }
     };
-
-    if store {
-        fs::write(&store_path, &input)?;
-    }
 
     if input.len() < 500 {
         println!("Input:\n{}", &input);
