@@ -11,8 +11,8 @@ pub struct NewArgs {
 use std::fs;
 use std::path::PathBuf;
 
-const TEMPLATE: &str = include_str!("../template/general.cpp");
-const GEN_TEMPLATE: &str = include_str!("../template/generator.cpp");
+const TEMPLATE: &str = include_str!("../../template/general.cpp");
+const GEN_TEMPLATE: &str = include_str!("../../template/generator.cpp");
 pub fn new(args: NewArgs) -> eyre::Result<()> {
     let path = PathBuf::from(args.path).join(args.name);
     fs::create_dir_all(&path)?;

@@ -9,7 +9,7 @@ inline int qread() {
     bool f = 0;
     while (c < '0' || c > '9') {
         if (c == '-') {
-            f = -1;
+            f = 1;
         }
         c = getchar();
     }
@@ -28,6 +28,7 @@ const int INF = INT_MAX;
 const int N = 0;
 
 signed main() {
-    //
+    // freopen("out", "w", stdout);
+
     return 0;
 }

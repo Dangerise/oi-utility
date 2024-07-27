@@ -1,5 +1,5 @@
 use clap::{Parser, Subcommand};
-use oi_utility::*;
+use oi_utility::commands::*;
 
 #[derive(Parser)]
 struct CliArgs {
@@ -12,6 +12,7 @@ enum Commands {
     Run(run::RunArgs),
     New(new::NewArgs),
     Check(check::CheckArgs),
+    Store(store::StoreArgs),
 }
 
 fn main() -> eyre::Result<()> {
@@ -21,6 +22,7 @@ fn main() -> eyre::Result<()> {
         Commands::New(args) => new::new(args)?,
         Commands::Run(args) => run::run(args)?,
         Commands::Check(args) => check::check(args)?,
+        Commands::Store(args) => store::store(args)?,
     }
 
     Ok(())

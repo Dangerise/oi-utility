@@ -1,8 +1,8 @@
-use super::*;
-
 use copypasta::{ClipboardContext, ClipboardProvider};
 use std::fmt::Debug;
+use eyre::eyre;
 
+#[inline(always)]
 fn map_err(err: impl Debug) -> eyre::Report {
     eyre!("{:?}", err)
 }
