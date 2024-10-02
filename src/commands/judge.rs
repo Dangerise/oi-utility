@@ -29,7 +29,7 @@ pub fn judge(args: JudgeArgs) -> eyre::Result<()> {
         }
     }
     
-    let files=Vec::new();
-    for (name,path) 
+    // let files=Vec::new();
+    // for (name,path) 
     Ok(())
 }
