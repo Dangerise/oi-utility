@@ -66,7 +66,12 @@ pub fn run(args: RunArgs) -> eyre::Result<()> {
         (false, Some(path)) => fs::read_to_string(path)?,
         (false, None) => {
             let store_path = source_parent.join("store.txt");
-            fs::read_to_string(store_path)?
+            let content = if store_path.exists() {
+                fs::read_to_string(store_path)?
+            } else {
+                String::new()
+            };
+            content
         }
         _ => {
             unreachable!()

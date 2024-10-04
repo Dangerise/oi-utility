@@ -6,7 +6,7 @@ use clap::Parser;
 
 #[derive(Debug, Clone, Default, Parser)]
 pub struct StoreArgs {
-    #[clap(short, long)]
+    #[clap(short, long, default_value_t = true)]
     clipboard: bool,
     #[clap(short, long)]
     file: Option<PathBuf>,
@@ -22,8 +22,8 @@ pub fn store(args: StoreArgs) -> eyre::Result<()> {
             panic!()
         }
     };
-    
-    fs::write("./store.txt",content)?;
-    
+
+    fs::write("./store.txt", content)?;
+
     Ok(())
 }
