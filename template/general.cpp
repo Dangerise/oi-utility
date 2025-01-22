@@ -3,12 +3,11 @@ using namespace std;
 
 #define int long long
 // #define double long double
-#define il inline
-#define siz(x) ((int)x.size())
+#define siz(x) ((int)(x).size())
 #define me(a, v) memset(a, v, sizeof(a))
 #define cp(a, b) memcpy(b, a, (assert(sizeof(a) == sizeof(b)), sizeof(a)))
-#define L(i, l, r) for (int i = l; i <= r; i++)
-#define R(i, r, l) for (int i = r; i >= l; i--)
+#define L(i, l, r) for (int i = (l); i <= (r); i++)
+#define R(i, r, l) for (int i = (r); i >= (l); i--)
 #define x first
 #define y second
 
@@ -16,26 +15,37 @@ using namespace std;
 #define vep(a, b) vector<pair<a, b>>
 #define pa(a, b) pair<a, b>
 #define map(a, b) map<a, b>
-#define set(a, b) set(a, b)
+#define set(a) set<a>
 #define mmap(a, b) multimap<a, b>
-#define mset(a, b) mset<a, b>
+#define mset(a) multiset<a>
 #define hmap(a, b) unordered_map<a, b>
-#define hset(a, b) unordered_set<a, b>
+#define hset(a) unordered_set<a>
+#define geap(a) priority_queue<a>
+#define heap(a) priority_queue<a, vector<a>, greater<a>>
 
 typedef double flt;
 typedef string str;
 
-il char gc() { return getchar(); }
-il void pc(char c) { putchar(c); }
-il void el() { pc('\n'); }
-il void bp() { puts("Fuck ccf !"); }
-il int qread() {
-    int ans = 0;
+void ast(bool cond, int code) {
+    if (!cond) {
+        exit(code);
+    }
+}
+char gc() { return getchar(); }
+void pc(char c) { putchar(c); }
+void el() { pc('\n'); }
+void bp() { puts("Fuck ccf !"); }
+void dtm(bool cond) { puts(cond ? "Yes" : "No"); }
+void spc() { pc(' '); }
+// il __int128 abs(__int128 x){
+// 	return x<0?-x:x;
+// }
+int qread() {
+    int ans = 0, f = 1;
     char c = gc();
-    bool f = 0;
     while (c < '0' || c > '9') {
         if (c == '-') {
-            f = 1;
+            f = -1;
         }
         c = gc();
     }
@@ -43,19 +53,41 @@ il int qread() {
         ans = ans * 10 + c - '0';
         c = gc();
     }
-    if (f) {
-        return -ans;
-    } else {
-        return ans;
-    }
+    return ans * f;
 }
 
-constexpr int N = 114514, inf = LONG_LONG_MAX / 2 - 100;
+struct R {
+    int l, r;
+};
+
+bool operator<(const R &x, const R &y) { return x.r < y.l; }
+
+constexpr int mod = 1e9 + 7;
+int qpow(int a, int b) {
+    int res = 1;
+    for (; b; b >>= 1, a = a * a % mod) {
+        if (b & 1) {
+            res *= a;
+            res %= mod;
+        }
+    }
+    return res;
+}
+
+int max(int x, int y) { return x > y ? x : y; }
+int min(int x, int y) { return x < y ? x : y; }
+int sqr(int x) { return x * x; }
+int ceil(int x, int y) { return x % y ? x / y + 1 : x / y; }
+
+constexpr int N = 0, inf = LONG_LONG_MAX / 2 - 100;
 constexpr flt eps = 1e-9;
 
+void solve() {}
+
 signed main() {
-    // int t = qread();
-    // while (t--) {
-    // }
+    int T = qread();
+    while (T--) {
+        solve();
+    }
     return 0;
 }

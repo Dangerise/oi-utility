@@ -21,7 +21,7 @@ fn new_problem(name: &str, parent_directory: &Path) -> eyre::Result<()> {
     let directory = PathBuf::from(parent_directory).join(name);
     fs::create_dir_all(&directory)?;
 
-    let program = directory.join("p.cpp");
+    let program = directory.join(format!("{}.cpp", name));
     fs::write(program, TEMPLATE)?;
 
     let std_program = directory.join("std.cpp");
