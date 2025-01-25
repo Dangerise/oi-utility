@@ -75,6 +75,8 @@ int qpow(int a, int b) {
 
 void updmax(int &x, int y) { x = max(x, y); }
 void updmin(int &x, int y) { x = min(x, y); }
+int gcd(int x, int y) { return __gcd(x, y); }
+int lcm(int x, int y) { return x / gcd(x, y) * y; }
 int lowbit(int x) { return x & (-x); }
 int max(int x, int y) { return x > y ? x : y; }
 int min(int x, int y) { return x < y ? x : y; }
