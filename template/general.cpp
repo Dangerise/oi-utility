@@ -25,6 +25,7 @@ using namespace std;
 
 typedef double flt;
 typedef string str;
+typedef __int128 bint;
 
 void ast(bool cond, int code) {
     if (!cond) {
