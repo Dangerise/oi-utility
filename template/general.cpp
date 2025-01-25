@@ -13,7 +13,7 @@ using namespace std;
 
 #define ve(a) vector<a>
 #define vep(a, b) vector<pair<a, b>>
-#define pa(a, b) pair<a, b>
+#define p(a, b) pair<a, b>
 #define map(a, b) map<a, b>
 #define set(a) set<a>
 #define mmap(a, b) multimap<a, b>
