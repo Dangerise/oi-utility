@@ -67,20 +67,22 @@ int qpow(int a, int b) {
     int res = 1;
     for (; b; b >>= 1, a = a * a % mod) {
         if (b & 1) {
-            res *= a;
-            res %= mod;
+            res = res * a % mod;
         }
     }
     return res;
 }
 
+void updmax(int &x, int y) { x = max(x, y); }
+void updmin(int &x, int y) { x = min(x, y); }
+int lowbit(int x) { return x & (-x); }
 int max(int x, int y) { return x > y ? x : y; }
 int min(int x, int y) { return x < y ? x : y; }
 int sqr(int x) { return x * x; }
 int ceil(int x, int y) { return x % y ? x / y + 1 : x / y; }
 
-constexpr int N = 0, inf = LONG_LONG_MAX / 2 - 100;
-constexpr flt eps = 1e-9;
+constexpr int N = 0;
+constexpr int inf = 0x3f3f3f3f3f3f3f3f;
 
 void solve() {}
 
