@@ -7,3 +7,5 @@ pub mod clipboard;
 pub mod run;
 
 pub mod judge;
+
+pub mod workspace;

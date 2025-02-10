@@ -1,14 +1,15 @@
 use std::io::{self, Write};
-use std::path::{Path};
+use std::path::Path;
 use std::process::{Command, ExitStatus, Stdio};
 use std::thread;
-
 
 #[derive(Debug, Clone)]
 pub struct RunResult {
     pub status: ExitStatus,
     pub output: String,
 }
+
+use eyre::Context;
 
 use super::{compile, run};
 pub fn compile_and_run_silently(path: impl AsRef<Path>, input: &str) -> eyre::Result<RunResult> {
@@ -29,7 +30,8 @@ pub fn run_silently(executable: impl AsRef<Path>, input: &str) -> eyre::Result<R
         })
         .stdout(Stdio::piped())
         .stderr(Stdio::null())
-        .spawn()?;
+        .spawn()
+        .wrap_err_with(|| format!("Errro occured when call \"{}\" !", executable.display()))?;
 
     let mut stdin = child.stdin.take().unwrap();
 
@@ -69,7 +71,7 @@ pub fn run(executable: impl AsRef<Path>, input: String) -> eyre::Result<ExitStat
     let status = child.wait()?;
 
     if !status.success() {
-        eyre::bail!("{:?}", status)
+        eyre::bail!("Run {} status {:?}", executable.display(), status)
     }
 
     Ok(status)

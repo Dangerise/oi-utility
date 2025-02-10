@@ -1,8 +1,7 @@
 use clap::Parser;
-use std::collections::HashMap;
 use std::ffi::OsStr;
 use std::fs::read_dir;
-use std::{fs, path::PathBuf};
+use std::path::PathBuf;
 
 #[derive(Parser, Default)]
 pub struct JudgeArgs {
@@ -10,31 +9,37 @@ pub struct JudgeArgs {
     only: Option<PathBuf>,
     #[clap(default_value_t=String::from("./"))]
     directory: String,
+    #[clap(short, long, default)]
+    source: String,
+    #[arg(value_name = "EXECUTABLE")]
+    executable: Option<String>,
 }
 
 pub fn judge(args: JudgeArgs) -> eyre::Result<()> {
     let JudgeArgs { only, directory } = args;
-    
-    if let Some(only)=only{
-        assert!(directory.as_str()!="./","Directory and only should not be both set !");
+    let directory = PathBuf::from(directory);
+
+    if only.is_some() {
+        assert!(
+            directory.as_os_str() != OsStr::new("./"),
+            "Directory and only should not be both set !"
+        );
     }
 
-    let mut in_file = HashMap::new();
-    let mut out_file = HashMap::new();
+    let mut tasks = Vec::new();
 
     for elm in read_dir(&directory)? {
         let entry = elm?;
         let path = entry.path();
         if path.extension() == Some(OsStr::new("in")) {
-            in_file.insert(path.file_stem().unwrap().to_os_string(), path.clone());
-        }
-        if path.extension() == Some(OsStr::new("out")) {
-            out_file.insert(path.file_stem().unwrap().to_os_string(), path.clone());
+            let file_stem = path.file_stem().unwrap();
+            tasks.push(directory.join(file_stem));
         }
     }
-    
-    for (name,path) in in_file{
-        
+
+    for task in tasks {
+        let in_file = task;
     }
+
     Ok(())
 }

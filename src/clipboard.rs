@@ -1,6 +1,6 @@
 use copypasta::{ClipboardContext, ClipboardProvider};
-use std::fmt::Debug;
 use eyre::eyre;
+use std::fmt::Debug;
 
 #[inline(always)]
 fn map_err(err: impl Debug) -> eyre::Report {

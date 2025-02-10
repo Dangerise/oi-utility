@@ -10,10 +10,16 @@ pub struct StoreArgs {
     clipboard: bool,
     #[clap(short, long)]
     file: Option<PathBuf>,
+    #[clap(short, long)]
+    output: Option<PathBuf>,
 }
 
 pub fn store(args: StoreArgs) -> eyre::Result<()> {
-    let StoreArgs { clipboard, file } = args;
+    let StoreArgs {
+        clipboard,
+        file,
+        output,
+    } = args;
 
     let content = match (clipboard, file) {
         (true, None) => clipboard::get_clipboard()?,
@@ -23,7 +29,8 @@ pub fn store(args: StoreArgs) -> eyre::Result<()> {
         }
     };
 
-    fs::write("./store.txt", content)?;
+    let output = output.unwrap_or(PathBuf::from("./store.in"));
+    fs::write(output, content)?;
 
     Ok(())
 }

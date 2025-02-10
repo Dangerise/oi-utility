@@ -1,85 +1,66 @@
+use crate::workspace::Workspace;
 use crate::{clipboard, compile, run};
 use clap::{ArgAction, Parser};
-use eyre::eyre;
+use eyre::{ensure, Context, ContextCompat};
+use std::fs;
 use std::path::PathBuf;
-use std::{fs, path};
 
 #[derive(Parser)]
 pub struct RunArgs {
-    #[arg(value_name = "SOURCE",default_value_t=String::from("."))]
-    source: String,
-    #[arg(value_name = "EXECUTABLE")]
-    executable: Option<String>,
     #[arg(short, long, value_name = "FILE")]
     file: Option<PathBuf>,
+    #[arg(short, long)]
+    output: Option<PathBuf>,
     #[arg(short,long,action=ArgAction::SetTrue,value_name="CLIPBOARD")]
     clipboard: bool,
 }
 
-pub fn run(args: RunArgs) -> eyre::Result<()> {
+pub fn run(workspace: Workspace, args: RunArgs) -> eyre::Result<()> {
     let RunArgs {
-        source,
-        executable,
         file,
         clipboard,
+        output,
     } = args;
+    let Workspace {
+        path, main_code, ..
+    } = workspace;
 
-    let source = PathBuf::from(&source);
-    let code_path = if source.is_dir() {
-        let abs = path::absolute(&source).unwrap();
-        let name = abs.file_name().unwrap().to_str().unwrap();
-        let a = source.join(format!("{}.cpp", name));
-        let b = source.join("p.cpp");
-        let c = source.with_extension("cpp");
-        if a.exists() {
-            a
-        } else if b.exists() {
-            b
-        } else if c.exists() {
-            c
-        } else {
-            return Err(eyre!("No cpp file Found at {}", source.display()));
+    let main_code = main_code.wrap_err("solution code is not given !")?;
+
+    ensure!(
+        main_code.exists(),
+        "path \"{}\" do not exist !",
+        main_code.display()
+    );
+
+    let executable = {
+        let executable =
+            path.join(main_code.file_stem().wrap_err_with(|| {
+                format!("path \"{}\" has no file stem !", main_code.display())
+            })?);
+        #[cfg(target_os = "linux")]
+        {
+            executable
         }
-    } else {
-        if source.extension().is_none() {
-            source.with_extension("cpp")
-        } else {
-            source
+        #[cfg(target_os = "windows")]
+        {
+            executable.with_extension("exe");
         }
     };
-    let parent = code_path.parent().unwrap();
-    let executable = match executable {
-        Some(e) => PathBuf::from(e),
-        None => {
-            let executable = parent.join(code_path.file_stem().unwrap());
-            #[cfg(target_os = "linux")]
-            {
-                executable
-            }
-            #[cfg(target_os = "windows")]
-            {
-                executable.with_extension("exe");
-            }
-        }
-    };
-
-    if !code_path.exists() {
-        return Err(eyre!("Code not {} no exist !", code_path.display()));
-    }
 
     println!(
         "Compiling {} to {} ...\n",
-        code_path.display(),
+        main_code.display(),
         executable.display()
     );
 
-    compile::compile(&code_path, &executable)?;
+    compile::compile(&main_code, &executable)?;
 
     let input = match (clipboard, file) {
         (true, None) => clipboard::get_clipboard()?,
         (false, Some(path)) => fs::read_to_string(path)?,
         (false, None) => {
-            let store_path = parent.join("store.txt");
+            let store_path = path.join("store.in");
             let content = if store_path.exists() {
                 fs::read_to_string(store_path)?
             } else {
@@ -95,12 +76,18 @@ pub fn run(args: RunArgs) -> eyre::Result<()> {
     if input.len() < 500 {
         println!("Input:\n{}", &input);
     } else {
-        println!("The input is too large");
+        println!("Input size = {}", input.len());
     }
 
-    println!("\nStdout:");
-
-    let status = run::run(executable, input)?;
+    let status = if let Some(output) = output {
+        let result = run::run_silently(executable, &input)?;
+        fs::write(&output, result.output)
+            .wrap_err_with(|| format!("Error occured when writing to \"{}\"", output.display()))?;
+        result.status
+    } else {
+        println!("\nStdout:");
+        run::run(executable, input)?
+    };
 
     println!("\n\nStatus:\n{:?}\n", status);
     Ok(())

@@ -20,11 +20,10 @@ using namespace std;
 #define mset(a) multiset<a>
 #define hmap(a, b) unordered_map<a, b>
 #define hset(a) unordered_set<a>
-#define geap(a) priority_queue<a>
-#define heap(a) priority_queue<a, vector<a>, greater<a>>
 
 typedef double flt;
 typedef string str;
+typedef signed sint;
 typedef __int128 bint;
 
 void ast(bool cond, int code) {
@@ -35,7 +34,10 @@ void ast(bool cond, int code) {
 char gc() { return getchar(); }
 void pc(char c) { putchar(c); }
 void el() { pc('\n'); }
-void bp() { puts("Fuck ccf !"); }
+void bp() {
+    puts("Fuck ccf !");
+    fflush(stdout);
+}
 void dtm(bool cond) { puts(cond ? "Yes" : "No"); }
 void spc() { pc(' '); }
 // il __int128 abs(__int128 x){
@@ -64,6 +66,7 @@ struct R {
 bool operator<(const R &x, const R &y) { return x.r < y.l; }
 
 constexpr int mod = 1e9 + 7;
+// constexpr int mod = 998244353;
 int qpow(int a, int b) {
     int res = 1;
     for (; b; b >>= 1, a = a * a % mod) {
@@ -89,7 +92,7 @@ constexpr int inf = 0x3f3f3f3f3f3f3f3f;
 
 void solve() {}
 
-signed main() {
+sint main() {
     int T = qread();
     while (T--) {
         solve();
