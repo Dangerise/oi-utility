@@ -11,7 +11,6 @@ pub struct RunResult {
 
 use eyre::Context;
 
-use super::{compile, run};
 
 pub fn run_silently(executable: impl AsRef<Path>, input: &str) -> eyre::Result<RunResult> {
     let executable = executable.as_ref();

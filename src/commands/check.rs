@@ -42,7 +42,7 @@ pub fn check(workspace: Workspace, args: CheckArgs) -> eyre::Result<()> {
     compile::compile(&std_code, &std_path)?;
     compile::compile(&generator_code, &generator_path)?;
 
-    for i in 0..args.times {
+    for i in 0..times {
         println!("Task #{}", i);
 
         println!("Running data generator at {} ...", generator_path.display());
@@ -56,7 +56,7 @@ pub fn check(workspace: Workspace, args: CheckArgs) -> eyre::Result<()> {
             ));
         }
 
-        let input = fs::read_to_string("input.txt")?;
+        let input = fs::read_to_string(&input)?;
 
         println!("Running my program at {} ...", my_path.display());
         let my_output = run::run_silently(&my_path, &input)?;

@@ -4,7 +4,7 @@ use super::*;
 
 use std::ffi::OsStr;
 use std::io::{stderr, stdout};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::process::{Command, Stdio};
 
 pub fn compile(source: impl AsRef<Path>, executable: impl AsRef<Path>) -> eyre::Result<()> {
