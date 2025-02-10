@@ -1,4 +1,4 @@
-use eyre::{ensure, Context, ContextCompat};
+use eyre::{ensure, Context};
 
 use super::*;
 
