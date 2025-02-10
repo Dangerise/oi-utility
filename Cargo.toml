@@ -9,4 +9,3 @@ edition = "2021"
 clap = { version = "4.5.4", features = ["cargo", "derive"] }
 copypasta = "0.10.1"
 eyre = "0.6.12"
-rayon = "1.10.0"
