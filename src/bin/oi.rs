@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use clap::{Parser, Subcommand};
 use oi_utility::{
     commands::*,
-    workspace::{self, Workspace},
+    workspace::{Workspace},
 };
 
 #[derive(Parser)]

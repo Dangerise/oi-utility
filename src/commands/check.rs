@@ -1,4 +1,4 @@
-use crate::{compile, judge, run};
+use crate::{compile, judge, run, workspace::Workspace};
 
 use clap::Parser;
 use eyre::eyre;
@@ -6,13 +6,7 @@ use std::fs;
 
 #[derive(Parser)]
 pub struct CheckArgs {
-    #[clap(short,long,default_value_t=String::from("./p.cpp"))]
-    my: String,
-    #[clap(short,long,default_value_t=String::from("./std.cpp"))]
-    std: String,
-    #[clap(short,long,default_value_t=String::from("./gen.cpp"))]
-    generator_code: String,
-    #[clap(short,long,default_value_t=String::from("./input.txt"))]
+    #[clap(short,long,default_value_t=String::from("./.in"))]
     input: String,
     #[clap(short, long, default_value_t = 100)]
     times: u32,
@@ -20,7 +14,7 @@ pub struct CheckArgs {
 
 // fn single_task(index:u32)->bo
 
-pub fn check(args: CheckArgs) -> eyre::Result<()> {
+pub fn check(workspace: Workspace, args: CheckArgs) -> eyre::Result<()> {
     println!(
         "Compiling gen : {} std: {} my : {}...",
         &args.generator_code, &args.std, &args.my

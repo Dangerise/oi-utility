@@ -44,7 +44,7 @@ impl Workspace {
                     return Some(a);
                 }
             }
-            return Some(b);
+            Some(b)
         };
 
         let filter = |extension: &str| -> eyre::Result<Vec<PathBuf>> {

@@ -61,12 +61,12 @@ pub fn run(workspace: Workspace, args: RunArgs) -> eyre::Result<()> {
         (false, Some(path)) => fs::read_to_string(path)?,
         (false, None) => {
             let store_path = path.join("store.in");
-            let content = if store_path.exists() {
+            
+            if store_path.exists() {
                 fs::read_to_string(store_path)?
             } else {
                 String::new()
-            };
-            content
+            }
         }
         _ => {
             unreachable!()

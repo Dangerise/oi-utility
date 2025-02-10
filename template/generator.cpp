@@ -55,7 +55,7 @@ constexpr int N = 10, V = 10;
 il int random(int l, int r) { return (int)rand() * rand() % (r - l + 1) + l; }
 
 signed main() {
-    freopen("input.txt", "w", stdout);
+    freopen(".in", "w", stdout);
 
     srand((int)time(0));
 

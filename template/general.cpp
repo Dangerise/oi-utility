@@ -25,12 +25,8 @@ typedef double flt;
 typedef string str;
 typedef signed sint;
 typedef __int128 bint;
+typedef p(int, int) pii;
 
-void ast(bool cond, int code) {
-    if (!cond) {
-        exit(code);
-    }
-}
 char gc() { return getchar(); }
 void pc(char c) { putchar(c); }
 void el() { pc('\n'); }
@@ -43,6 +39,31 @@ void spc() { pc(' '); }
 // il __int128 abs(__int128 x){
 // 	return x<0?-x:x;
 // }
+char qrc() {
+    auto av = [&](char c) -> bool {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    };
+    char c = gc();
+    while (!av(c)) {
+        c = gc();
+    }
+    return c;
+}
+void qrs(string &s) {
+    auto av = [&](char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+               (c >= '0' && c <= '9');
+    };
+    char c = gc();
+    while (!av(c)) {
+        c = gc();
+    }
+    s.clear();
+    while (av(c)) {
+        s.push_back(c);
+        c = gc();
+    }
+}
 int qread() {
     int ans = 0, f = 1;
     char c = gc();
@@ -58,12 +79,6 @@ int qread() {
     }
     return ans * f;
 }
-
-struct R {
-    int l, r;
-};
-
-bool operator<(const R &x, const R &y) { return x.r < y.l; }
 
 constexpr int mod = 1e9 + 7;
 // constexpr int mod = 998244353;
