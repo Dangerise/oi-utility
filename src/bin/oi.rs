@@ -1,10 +1,7 @@
 use std::path::PathBuf;
 
 use clap::{Parser, Subcommand};
-use oi_utility::{
-    commands::*,
-    workspace::{Workspace},
-};
+use oi_utility::{commands::*, workspace::Workspace};
 
 #[derive(Parser)]
 struct CliArgs {
@@ -52,7 +49,7 @@ fn main() -> eyre::Result<()> {
     match commands {
         Commands::New(args) => new::new(args)?,
         Commands::Run(args) => run::run(workspace, args)?,
-        Commands::Check(args) => check::check(args)?,
+        Commands::Check(args) => check::check(workspace, args)?,
         Commands::Store(args) => store::store(args)?,
     }
 

@@ -1,5 +1,5 @@
 use crate::workspace::Workspace;
-use crate::{clipboard, compile, run};
+use crate::{clipboard, compile, executable_path, run};
 use clap::{ArgAction, Parser};
 use eyre::{ensure, Context, ContextCompat};
 use std::fs;
@@ -33,20 +33,7 @@ pub fn run(workspace: Workspace, args: RunArgs) -> eyre::Result<()> {
         main_code.display()
     );
 
-    let executable = {
-        let executable =
-            path.join(main_code.file_stem().wrap_err_with(|| {
-                format!("path \"{}\" has no file stem !", main_code.display())
-            })?);
-        #[cfg(target_os = "linux")]
-        {
-            executable
-        }
-        #[cfg(target_os = "windows")]
-        {
-            executable.with_extension("exe");
-        }
-    };
+    let executable = executable_path(&main_code)?;
 
     println!(
         "Compiling {} to {} ...\n",
@@ -61,7 +48,7 @@ pub fn run(workspace: Workspace, args: RunArgs) -> eyre::Result<()> {
         (false, Some(path)) => fs::read_to_string(path)?,
         (false, None) => {
             let store_path = path.join("store.in");
-            
+
             if store_path.exists() {
                 fs::read_to_string(store_path)?
             } else {

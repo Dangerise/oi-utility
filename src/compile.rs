@@ -39,19 +39,3 @@ pub fn compile(source: impl AsRef<Path>, executable: impl AsRef<Path>) -> eyre::
 
     Ok(())
 }
-
-pub fn compile_auto_name(path: impl AsRef<Path>) -> eyre::Result<PathBuf> {
-    let path = path.as_ref();
-    let directory = path
-        .parent()
-        .wrap_err_with(|| format!("Directory {} has no parent !", path.display()))?;
-
-    let executable = directory.join(
-        path.file_stem()
-            .wrap_err_with(|| format!("Directory {} has no file name !", directory.display()))?,
-    );
-
-    compile::compile(path, &executable)?;
-
-    Ok(executable)
-}
