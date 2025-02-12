@@ -23,7 +23,7 @@ pub fn judge(workspace: Workspace, args: JudgeArgs) -> eyre::Result<()> {
     let JudgeArgs { only } = args;
     if let Some(path) = only {
         data = vec![path];
-    };
+    }
 
     let executable = executable_path(&main_code)?;
     compile::compile(&main_code, &executable)?;
