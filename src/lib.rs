@@ -15,7 +15,10 @@ use std::path::{self, Path, PathBuf};
 use eyre::{ContextCompat, Ok};
 pub fn executable_path<P: AsRef<Path>>(path: P) -> eyre::Result<PathBuf> {
     let path = path.as_ref();
-    let parent = path::absolute(path)?;
+    let abs = path::absolute(path)?;
+    let parent = abs
+        .parent()
+        .wrap_err_with(|| format!("Path \"{} don't have a parent !\"", path.display()))?;
     let executable = parent.join(
         path.file_stem()
             .wrap_err_with(|| format!("Path \"{}\" has not file stem !", path.display()))?,

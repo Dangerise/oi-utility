@@ -26,6 +26,7 @@ pub fn compile(source: impl AsRef<Path>, executable: impl AsRef<Path>) -> eyre::
             executable.as_os_str(),
             OsStr::new("-Wall"),
             OsStr::new("-Wextra"),
+            OsStr::new("-std=c++14"),
         ])
         .stdout(stdout())
         .stdin(Stdio::null())
@@ -34,7 +35,12 @@ pub fn compile(source: impl AsRef<Path>, executable: impl AsRef<Path>) -> eyre::
         .wrap_err_with(|| "Error occured when call GCC !")?;
 
     if !status.success() {
-        eyre::bail!("GCC return : {:?}", status);
+        eyre::bail!(
+            "GCC return : {:?} Source : {} Executable : {}",
+            status,
+            source.display(),
+            executable.display()
+        );
     }
 
     Ok(())
