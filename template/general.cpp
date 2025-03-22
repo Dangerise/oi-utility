@@ -20,6 +20,7 @@ using namespace std;
 #define mset(a) multiset<a>
 #define hmap(a, b) unordered_map<a, b>
 #define hset(a) unordered_set<a>
+#define bs(n) bitset<n>
 
 typedef double flt;
 typedef string str;
@@ -82,15 +83,6 @@ int qread() {
 
 constexpr int mod = 1e9 + 7;
 // constexpr int mod = 998244353;
-int qpow(int a, int b) {
-    int res = 1;
-    for (; b; b >>= 1, a = a * a % mod) {
-        if (b & 1) {
-            res = res * a % mod;
-        }
-    }
-    return res;
-}
 
 void updmax(int &x, int y) { x = max(x, y); }
 void updmin(int &x, int y) { x = min(x, y); }
