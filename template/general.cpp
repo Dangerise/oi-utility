@@ -4,15 +4,18 @@ using namespace std;
 #define int long long
 // #define double long double
 #define siz(x) ((int)(x).size())
-#define me(a, v) memset(a, v, sizeof(a))
-#define cp(a, b) memcpy(b, a, (assert(sizeof(a) == sizeof(b)), sizeof(a)))
+#define me(a, v, n) memset(a, v, sizeof(typeof(*a)) * (n + 1))
+#define cp(a, b, n)                                                            \
+    memcpy(b, a,                                                               \
+           (assert(sizeof(a) == sizeof(b) &&                                   \
+                   sizof(typeof(*a)) == sizof(typeof(*b))),                    \
+            sizeof(typeof(*a)) * (n + 1)))
 #define L(i, l, r) for (int i = (l); i <= (r); i++)
 #define R(i, r, l) for (int i = (r); i >= (l); i--)
 #define x first
 #define y second
 
 #define ve(a) vector<a>
-#define vep(a, b) vector<pair<a, b>>
 #define p(a, b) pair<a, b>
 #define map(a, b) map<a, b>
 #define set(a) set<a>
@@ -23,10 +26,8 @@ using namespace std;
 #define bs(n) bitset<n>
 
 typedef double flt;
-typedef string str;
 typedef signed sint;
 typedef __int128 bint;
-typedef p(int, int) pii;
 
 char gc() { return getchar(); }
 void pc(char c) { putchar(c); }
@@ -37,9 +38,6 @@ void bp() {
 }
 void dtm(bool cond) { puts(cond ? "Yes" : "No"); }
 void spc() { pc(' '); }
-// il __int128 abs(__int128 x){
-// 	return x<0?-x:x;
-// }
 char qrc() {
     auto av = [&](char c) -> bool {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
@@ -66,19 +64,18 @@ void qrs(string &s) {
     }
 }
 int qread() {
-    int ans = 0, f = 1;
-    char c = gc();
+    int ret = 0;
+    bool sgn = 0;
+    char c;
     while (c < '0' || c > '9') {
-        if (c == '-') {
-            f = -1;
-        }
+        sgn |= (c == '-');
         c = gc();
     }
     while (c >= '0' && c <= '9') {
-        ans = ans * 10 + c - '0';
+        ret = ret * 10 + c - '0';
         c = gc();
     }
-    return ans * f;
+    return sgn ? -ret : ret;
 }
 
 constexpr int mod = 1e9 + 7;
