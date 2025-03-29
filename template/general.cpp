@@ -66,7 +66,7 @@ void qrs(string &s) {
 int qread() {
     int ret = 0;
     bool sgn = 0;
-    char c;
+    char c = gc();
     while (c < '0' || c > '9') {
         sgn |= (c == '-');
         c = gc();
