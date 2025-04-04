@@ -4,28 +4,12 @@ using namespace std;
 #define int long long
 // #define double long double
 #define siz(x) ((int)(x).size())
-#define me(a, v, n) memset(a, v, sizeof(typeof(*a)) * (n + 1))
-#define cp(a, b, n)                                                            \
-    memcpy(b, a,                                                               \
-           (assert(sizeof(a) == sizeof(b) &&                                   \
-                   sizof(typeof(*a)) == sizof(typeof(*b))),                    \
-            sizeof(typeof(*a)) * (n + 1)))
+#define me(a, v) memset(a, v, sizeof(a))
 #define L(i, l, r) for (int i = (l); i <= (r); i++)
 #define R(i, r, l) for (int i = (r); i >= (l); i--)
 #define x first
 #define y second
 
-#define ve(a) vector<a>
-#define p(a, b) pair<a, b>
-#define map(a, b) map<a, b>
-#define set(a) set<a>
-#define mmap(a, b) multimap<a, b>
-#define mset(a) multiset<a>
-#define hmap(a, b) unordered_map<a, b>
-#define hset(a) unordered_set<a>
-#define bs(n) bitset<n>
-
-typedef double flt;
 typedef signed sint;
 typedef __int128 bint;
 
@@ -78,6 +62,91 @@ int qread() {
     return sgn ? -ret : ret;
 }
 
+template <typename T> struct Ve {
+    vector<T> v;
+    void init(int n, const T &val) {
+        v.clear();
+        v.resize(n + 1, val);
+    }
+    Ve() : v(vector<T>(1, T())) {}
+    Ve(int n, const T &val) { init(n, val); }
+    void reserve(int n) { v.reserve(n); }
+    void clear() { v.resize(1); }
+    int size() const { return siz(v) - 1; }
+    void check_empty(const char *msg) const {
+#ifdef DEBUG
+        if (siz(v) <= 1) {
+            printf("Panic : %s vector is empty !", msg);
+            exit(823543);
+        }
+#endif
+    }
+    void check_index(const char *msg, int idx) const {
+#ifdef DEBUG
+        if (!(idx >= 0 && idx <= size())) {
+            printf("Panic : %s index %lld out of bound %lld\n", msg, idx,
+                   size());
+            exit(823543);
+        }
+#endif
+    }
+    const T &operator[](int idx) const {
+        check_index("[]", idx);
+        return v[idx];
+    }
+    T &operator[](int idx) {
+        check_index("[]", idx);
+        return v[idx];
+    }
+
+    using const_iter = typename ::vector<T>::const_iterator;
+    using iter = typename ::vector<T>::iterator;
+    const_iter begin() const { return v.begin() + 1; }
+    iter begin() { return v.begin() + 1; }
+    const_iter end() const { return v.end(); }
+    iter end() { return v.end(); }
+
+    const T &front() const {
+        check_empty("front");
+        return v[1];
+    }
+    const T &back() const {
+        check_empty("back");
+        return v.back();
+    }
+
+    void push(const T &val) { v.push_back(val); }
+    void pop() {
+        check_empty("pop");
+        assert(size() > 0);
+        v.pop_back();
+    }
+    void erase(int l, int r) { v.erase(v.begin() + l, v.begin() + r + 1); }
+    void insert(int at, const T &val) { v.insert(v.begin() + at, val); }
+};
+
+#define ve(a) Ve<a>
+#define p(a, b) pair<a, b>
+#define map(a, b) map<a, b>
+#define set(a) set<a>
+#define mmap(a, b) multimap<a, b>
+#define mset(a) multiset<a>
+#define hmap(a, b) unordered_map<a, b>
+#define hset(a) unordered_set<a>
+#define bs(n) bitset<n>
+
+void output(int x) { printf("%lld", x); }
+void output(const char *s) { printf("%s", s); }
+template <typename T> void output(const ve(T) & v) {
+    printf("[");
+    for (auto &elm : v) {
+        output(elm);
+        printf(",");
+    }
+    printf("]");
+}
+#define dbg(x) printf("%s = ", #x), output(x), el()
+
 constexpr int mod = 1e9 + 7;
 // constexpr int mod = 998244353;
 
@@ -94,12 +163,12 @@ int ceil(int x, int y) { return (x + y - 1) / y; }
 constexpr int N = -1;
 constexpr int inf = 0x3f3f3f3f3f3f3f3f;
 
-void solve() {}
+void task() {}
 
 sint main() {
     int T = qread();
     while (T--) {
-        solve();
+        task();
     }
     return 0;
 }

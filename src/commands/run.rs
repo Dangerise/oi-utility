@@ -7,6 +7,8 @@ use std::path::PathBuf;
 
 #[derive(Parser)]
 pub struct RunArgs {
+    #[arg(value_name = "SOURCE")]
+    main_code: Option<PathBuf>,
     #[arg(short, long, value_name = "FILE")]
     file: Option<PathBuf>,
     #[arg(short, long)]
@@ -17,15 +19,21 @@ pub struct RunArgs {
 
 pub fn run(workspace: Workspace, args: RunArgs) -> eyre::Result<()> {
     let RunArgs {
+        main_code: main_code_cli,
         file,
         clipboard,
         output,
     } = args;
     let Workspace {
-        path, main_code, ..
+        path,
+        main_code: main_code_workspace,
+        ..
     } = workspace;
 
-    let main_code = main_code.wrap_err("solution code is not given !")?;
+    let main_code = match main_code_cli {
+        Some(c) => c,
+        None => main_code_workspace.wrap_err("solution code is not given !")?,
+    };
 
     ensure!(
         main_code.exists(),
