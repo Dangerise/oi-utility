@@ -122,7 +122,7 @@ template <typename T> struct Ve {
 };
 
 template <typename T, int N> struct Ar {
-    Ar<T, N> v;
+    T v[N + 1];
     int n;
     void init(int in, const T &val) {
         n = in;

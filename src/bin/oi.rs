@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use actually_beep::beep_with_hz_and_millis;
 use clap::{Parser, Subcommand};
 use oi_utility::{commands::*, workspace::Workspace};
 
@@ -46,12 +47,16 @@ fn main() -> eyre::Result<()> {
         workspace.generator_code.replace(gen);
     }
 
-    match commands {
-        Commands::New(args) => new::new(args)?,
-        Commands::Run(args) => run::run(workspace, args)?,
-        Commands::Check(args) => check::check(workspace, args)?,
-        Commands::Store(args) => store::store(args)?,
+    let result = match commands {
+        Commands::New(args) => new::new(args),
+        Commands::Run(args) => run::run(workspace, args),
+        Commands::Check(args) => check::check(workspace, args),
+        Commands::Store(args) => store::store(args),
+    };
+
+    if result.is_err() {
+        beep_with_hz_and_millis(777, 70).unwrap();
     }
 
-    Ok(())
+    result
 }

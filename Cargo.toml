@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+actually_beep = "0.1.1"
 clap = { version = "4.5.4", features = ["cargo", "derive"] }
 copypasta = "0.10.1"
 eyre = "0.6.12"
