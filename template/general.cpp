@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <cassert>
 using namespace std;
 
 #define int long long
@@ -106,6 +107,7 @@ template <typename T> struct Ve {
 template <typename T, int N> struct Ar {
     array<T, N + 1> v;
     int n;
+    void resize(int in) { n = in; }
     void init(int in, const T &val) { fill(begin(), begin() + 1 + (n = in)); }
     Ar() {}
     Ar(int n, const T &val) { init(n, val); }
@@ -141,7 +143,7 @@ template <typename T, int N> struct Ar {
     const T &back() const { return chemp("back"), v[n]; }
     T &front() { return chemp("front"), v[1]; }
     T &back() { return chemp("back"), v[n]; }
-    void push(const T &val) { v[++n] = val; }
+    void push(const T &val) { assert(n + 1 <= N), v[++n] = val; }
     void pop() { chemp("pop"), assert(size() > 0), n--; }
 };
 
