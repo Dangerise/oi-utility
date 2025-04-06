@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <cstdio>
 using namespace std;
 
 #define int long long
@@ -17,10 +16,7 @@ typedef __int128 bint;
 char gc() { return getchar(); }
 void pc(char c) { putchar(c); }
 void el() { pc('\n'); }
-void bp() {
-    puts("Fuck ccf !");
-    fflush(stdout);
-}
+void bp() { puts("Fuck ccf !"), fflush(stdout); }
 void dtm(bool cond) { puts(cond ? "Yes" : "No"); }
 void spc() { pc(' '); }
 char qrc() {
@@ -65,16 +61,14 @@ int qread() {
 
 template <typename T> struct Ve {
     vector<T> v;
-    void init(int n, const T &val) {
-        v.clear();
-        v.resize(n + 1, val);
-    }
+    void resize(int n) { v.resize(n + 1); }
+    void init(int n, const T &val) { v.clear(), v.resize(n + 1, val); }
     Ve() : v(vector<T>(1, T())) {}
     Ve(int n, const T &val) { init(n, val); }
     void reserve(int n) { v.reserve(n); }
     void clear() { v.resize(1); }
     int size() const { return siz(v) - 1; }
-    void check_empty(const char *msg) const {
+    void chemp(const char *msg) const {
 #ifdef DEBUG
         if (siz(v) <= 1) {
             printf("Panic : %s vector is empty !", msg);
@@ -82,7 +76,7 @@ template <typename T> struct Ve {
         }
 #endif
     }
-    void check_index(const char *msg, int idx) const {
+    void chidx(const char *msg, int idx) const {
 #ifdef DEBUG
         if (!(idx >= 0 && idx <= size())) {
             printf("Panic : %s index %lld out of bound %lld\n", msg, idx,
@@ -91,48 +85,33 @@ template <typename T> struct Ve {
         }
 #endif
     }
-    const T &operator[](int idx) const {
-        check_index("[]", idx);
-        return v[idx];
-    }
-    T &operator[](int idx) {
-        check_index("[]", idx);
-        return v[idx];
-    }
-    const T *begin() const { return v.begin() + 1; }
-    T *begin() { return v.begin() + 1; }
-    const T *end() const { return v.end(); }
-    T *end() { return v.end(); }
-    const T &front() const {
-        check_empty("front");
-        return v[1];
-    }
-    const T &back() const {
-        check_empty("back");
-        return v.back();
-    }
+    const T &operator[](int idx) const { return chidx("[]", idx), v[idx]; }
+    T &operator[](int idx) { return chidx("[]", idx), v[idx]; }
+    using const_iter = typename ::vector<T>::const_iterator;
+    using iter = typename ::vector<T>::iterator;
+    const_iter begin() const { return v.begin() + 1; }
+    iter begin() { return v.begin() + 1; }
+    const_iter end() const { return v.end(); }
+    iter end() { return v.end(); }
+    const T &front() const { return chemp("front"), v[1]; }
+    const T &back() const { return chemp("back"), v.back(); }
+    T &front() { return chemp("front"), v[1]; }
+    T &back() { return chemp("back"), v.back(); }
     void push(const T &val) { v.push_back(val); }
-    void pop() {
-        check_empty("pop");
-        assert(size() > 0);
-        v.pop_back();
-    }
+    void pop() { chemp("pop"), assert(size() > 0), v.pop_back(); }
     void erase(int l, int r) { v.erase(v.begin() + l, v.begin() + r + 1); }
     void insert(int at, const T &val) { v.insert(v.begin() + at, val); }
 };
 
 template <typename T, int N> struct Ar {
-    T v[N + 1];
+    array<T, N + 1> v;
     int n;
-    void init(int in, const T &val) {
-        n = in;
-        L(i, 0, n) { v[i] = val; }
-    }
-    Ar() : v(vector<T>(1, T())) {}
+    void init(int in, const T &val) { fill(begin(), begin() + 1 + (n = in)); }
+    Ar() {}
     Ar(int n, const T &val) { init(n, val); }
     void clear() { n = 0; }
     int size() const { return n; }
-    void check_empty(const char *msg) const {
+    void chemp(const char *msg) const {
 #ifdef DEBUG
         if (siz(v) <= 1) {
             printf("Panic : %s vector is empty !", msg);
@@ -140,7 +119,7 @@ template <typename T, int N> struct Ar {
         }
 #endif
     }
-    void check_index(const char *msg, int idx) const {
+    void chidx(const char *msg, int idx) const {
 #ifdef DEBUG
         if (!(idx >= 0 && idx <= size())) {
             printf("Panic : %s index %lld out of bound %lld\n", msg, idx,
@@ -149,35 +128,21 @@ template <typename T, int N> struct Ar {
         }
 #endif
     }
-    const T &operator[](int idx) const {
-        check_index("[]", idx);
-        return v[idx];
-    }
-    T &operator[](int idx) {
-        check_index("[]", idx);
-        return v[idx];
-    }
-    const T *begin() const { return v.begin() + 1; }
-    T *begin() { return v.begin() + 1; }
-    const T *end() const { return v.end(); }
-    T *end() { return v.end(); }
+    const T &operator[](int idx) const { return chidx("[]", idx), v[idx]; }
+    T &operator[](int idx) { return chidx("[]", idx), v[idx]; }
+    using const_iter = typename ::array<T, N + 1>::const_iterator;
+    using iter = typename ::array<T, N + 1>::iterator;
+    const_iter begin() const { return v.begin() + 1; }
+    iter begin() { return v.begin() + 1; }
+    const_iter end() const { return v.begin() + 1 + n; }
+    iter end() { return v.begin() + 1 + n; }
 
-    const T &front() const {
-        check_empty("front");
-        return v[1];
-    }
-    const T &back() const {
-        check_empty("back");
-        return v.back();
-    }
+    const T &front() const { return chemp("front"), v[1]; }
+    const T &back() const { return chemp("back"), v[n]; }
+    T &front() { return chemp("front"), v[1]; }
+    T &back() { return chemp("back"), v[n]; }
     void push(const T &val) { v[++n] = val; }
-    void pop() {
-        check_empty("pop");
-        assert(size() > 0);
-        n--;
-    }
-    void erase(int l, int r) { v.erase(v.begin() + l, v.begin() + r + 1); }
-    void insert(int at, const T &val) { v.insert(v.begin() + at, val); }
+    void pop() { chemp("pop"), assert(size() > 0), n--; }
 };
 
 #define ve(a) Ve<a>
@@ -237,14 +202,6 @@ template <int M> struct modint {
 };
 #define mint(mod) modint<mod>
 
-#define output_collection(c)                                                   \
-    template <typename A, typename B> void output(const c &v) {                \
-        printf("[");                                                           \
-        for (auto &elm : v) {                                                  \
-            output(elm), printf(",");                                          \
-        }                                                                      \
-        printf("]");                                                           \
-    }
 void output(int x) { printf("%lld", x); }
 template <int M> void output(mint(M) x) { printf("%lld\n", x.v); }
 void output(char c) { printf("%c", c); }
@@ -252,16 +209,13 @@ void output(const char *s) { printf("%s", s); }
 template <typename A, typename B> void output(const p(A, B) & p) {
     pc('('), output(p.x), pc(','), output(p.y), pc(')');
 }
-
-output_collection(ve(A));
-output_collection(set(A));
-output_collection(map(A, B));
-output_collection(mset(A));
-output_collection(mmap(A, B));
-output_collection(hset(A));
-output_collection(hmap(A, B));
-output_collection(hmset(A));
-output_collection(hmmap(A, B));
+template <typename C> void output(const C &v) {
+    printf("[");
+    for (auto &elm : v) {
+        output(elm), printf(",");
+    }
+    printf("]");
+}
 
 #define dbg(x) printf("%s = ", #x), output(x), el()
 

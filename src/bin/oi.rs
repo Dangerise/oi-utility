@@ -55,7 +55,7 @@ fn main() -> eyre::Result<()> {
     };
 
     if result.is_err() {
-        beep_with_hz_and_millis(777, 70).unwrap();
+        beep_with_hz_and_millis(777, 100).unwrap();
     }
 
     result
