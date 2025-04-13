@@ -1,0 +1,4 @@
+-DDGR
+-std=c++14
+-O2
+-Wall -Wextra -Wshadow -Wredundant-decls -Wreorder -Winit-self
