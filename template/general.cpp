@@ -1,18 +1,50 @@
 #include <bits/stdc++.h>
-#include <cassert>
+#include <utility>
 using namespace std;
 
 #define int long long
 // #define double long double
 #define siz(x) ((int)(x).size())
 #define me(a, v) memset(a, v, sizeof(a))
-#define L(i, l, r) for (int i = (l); i <= (r); i++)
+#define wr printf
+#define L(i, l, r) for (int i = (l); i <= (r); i++ s)
 #define R(i, r, l) for (int i = (r); i >= (l); i--)
+#define mp make_pair
 #define x first
 #define y second
 
 typedef signed sint;
 typedef __int128 bint;
+
+#define ve(a) Ve<a>
+#define sve(a) static Ve<a>
+#define p(a, b) pair<a, b>
+#define map(a, b) map<a, b>
+#define set(a) set<a>
+#define mmap(a, b) multimap<a, b>
+#define mset(a) multiset<a>
+#define hmap(a, b) unordered_map<a, b>
+#define hset(a) unordered_set<a>
+#define hmmap(a, b) unordered_multimap<a, b>
+#define hmset(a) unordered_multiset<a>
+#define bs(n) bitset<n>
+
+#ifdef DGR
+#define dwr printf
+#define dbg(x) dwr("%s = ", #x), output(x), el()
+#define ast(expr, info)                                                        \
+    ((expr) ? void(0)                                                          \
+            : (dwr("Assert %s failed at %d\n", #expr, __LINE__), dbg(info),    \
+               dwr("\n"), throw 0))
+#define rdf(p) freopen(p, "r", stdin)
+#define wrf(p) freopen(p, "w", stdout)
+#else
+#define dbg
+#define ast
+#define rdf
+#define wrf
+#define dwr
+#endif
 
 char gc() { return getchar(); }
 void pc(char c) { putchar(c); }
@@ -20,7 +52,7 @@ void el() { pc('\n'); }
 void bp() { puts("Fuck ccf !"), fflush(stdout); }
 void dtm(bool cond) { puts(cond ? "Yes" : "No"); }
 void spc() { pc(' '); }
-char qrc() {
+char rc() {
     auto av = [&](char c) -> bool {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
     };
@@ -30,7 +62,7 @@ char qrc() {
     }
     return c;
 }
-void qrs(string &s) {
+void rs(string &s) {
     auto av = [&](char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
                (c >= '0' && c <= '9');
@@ -45,7 +77,7 @@ void qrs(string &s) {
         c = gc();
     }
 }
-int qread() {
+int rd() {
     int ret = 0;
     bool sgn = 0;
     char c = gc();
@@ -59,108 +91,6 @@ int qread() {
     }
     return sgn ? -ret : ret;
 }
-
-template <typename T> struct Ve {
-    vector<T> v;
-    void resize(int n) { v.resize(n + 1); }
-    void init(int n, const T &val) { v.clear(), v.resize(n + 1, val); }
-    Ve() : v(vector<T>(1, T())) {}
-    Ve(int n, const T &val) { init(n, val); }
-    void reserve(int n) { v.reserve(n); }
-    void clear() { v.resize(1); }
-    int size() const { return siz(v) - 1; }
-    void chemp(const char *msg) const {
-#ifdef DEBUG
-        if (siz(v) <= 1) {
-            printf("Panic : %s vector is empty !", msg);
-            exit(823543);
-        }
-#endif
-    }
-    void chidx(const char *msg, int idx) const {
-#ifdef DEBUG
-        if (!(idx >= 0 && idx <= size())) {
-            printf("Panic : %s index %lld out of bound %lld\n", msg, idx,
-                   size());
-            exit(823543);
-        }
-#endif
-    }
-    const T &operator[](int idx) const { return chidx("[]", idx), v[idx]; }
-    T &operator[](int idx) { return chidx("[]", idx), v[idx]; }
-    using const_iter = typename ::vector<T>::const_iterator;
-    using iter = typename ::vector<T>::iterator;
-    const_iter begin() const { return v.begin() + 1; }
-    iter begin() { return v.begin() + 1; }
-    const_iter end() const { return v.end(); }
-    iter end() { return v.end(); }
-    const T &front() const { return chemp("front"), v[1]; }
-    const T &back() const { return chemp("back"), v.back(); }
-    T &front() { return chemp("front"), v[1]; }
-    T &back() { return chemp("back"), v.back(); }
-    void push(const T &val) { v.push_back(val); }
-    void pop() { chemp("pop"), assert(size() > 0), v.pop_back(); }
-    void erase(int l, int r) { v.erase(v.begin() + l, v.begin() + r + 1); }
-    void insert(int at, const T &val) { v.insert(v.begin() + at, val); }
-};
-
-template <typename T, int N> struct Ar {
-    array<T, N + 1> v;
-    int n;
-    void resize(int in) { n = in; }
-    void init(int in, const T &val) { fill(begin(), begin() + 1 + (n = in)); }
-    Ar() {}
-    Ar(int n, const T &val) { init(n, val); }
-    void clear() { n = 0; }
-    int size() const { return n; }
-    void chemp(const char *msg) const {
-#ifdef DEBUG
-        if (siz(v) <= 1) {
-            printf("Panic : %s vector is empty !", msg);
-            exit(823543);
-        }
-#endif
-    }
-    void chidx(const char *msg, int idx) const {
-#ifdef DEBUG
-        if (!(idx >= 0 && idx <= size())) {
-            printf("Panic : %s index %lld out of bound %lld\n", msg, idx,
-                   size());
-            exit(823543);
-        }
-#endif
-    }
-    const T &operator[](int idx) const { return chidx("[]", idx), v[idx]; }
-    T &operator[](int idx) { return chidx("[]", idx), v[idx]; }
-    using const_iter = typename ::array<T, N + 1>::const_iterator;
-    using iter = typename ::array<T, N + 1>::iterator;
-    const_iter begin() const { return v.begin() + 1; }
-    iter begin() { return v.begin() + 1; }
-    const_iter end() const { return v.begin() + 1 + n; }
-    iter end() { return v.begin() + 1 + n; }
-
-    const T &front() const { return chemp("front"), v[1]; }
-    const T &back() const { return chemp("back"), v[n]; }
-    T &front() { return chemp("front"), v[1]; }
-    T &back() { return chemp("back"), v[n]; }
-    void push(const T &val) { assert(n + 1 <= N), v[++n] = val; }
-    void pop() { chemp("pop"), assert(size() > 0), n--; }
-};
-
-#define ve(a) Ve<a>
-#define sve(a) static Ve<a>
-#define ar(a, n) Ar<a, n>
-#define sar(a, n) static Ar<a, n>
-#define p(a, b) pair<a, b>
-#define map(a, b) map<a, b>
-#define set(a) set<a>
-#define mmap(a, b) multimap<a, b>
-#define mset(a) multiset<a>
-#define hmap(a, b) unordered_map<a, b>
-#define hset(a) unordered_set<a>
-#define hmmap(a, b) unordered_multimap<a, b>
-#define hmset(a) unordered_multiset<a>
-#define bs(n) bitset<n>
 
 template <int M> struct modint {
     int v;
@@ -204,22 +134,52 @@ template <int M> struct modint {
 };
 #define mint(mod) modint<mod>
 
-void output(int x) { printf("%lld", x); }
-template <int M> void output(mint(M) x) { printf("%lld\n", x.v); }
-void output(char c) { printf("%c", c); }
-void output(const char *s) { printf("%s", s); }
+void output(int x) { dwr("%lld", x); }
+void output(sint x) { dwr("%d", x); }
+template <int M> void output(mint(M) x) { dwr("%lld\n", x.v); }
+void output(char c) { dwr("%c", c); }
+void output(const char *s) { dwr("%s", s); }
 template <typename A, typename B> void output(const p(A, B) & p) {
     pc('('), output(p.x), pc(','), output(p.y), pc(')');
 }
 template <typename C> void output(const C &v) {
-    printf("[");
+    dwr("[");
     for (auto &elm : v) {
-        output(elm), printf(",");
+        output(elm), dwr(",");
     }
-    printf("]");
+    dwr("]");
 }
 
-#define dbg(x) printf("%s = ", #x), output(x), el()
+template <typename T> struct Ve {
+    vector<T> v;
+    bool empty() const { return size() > 0; }
+    void resize(int n) { v.resize(n + 1); }
+    void init(int n, const T &val) { v.clear(), v.resize(n + 1, val); }
+    Ve() : v(vector<T>(1, T())) {}
+    void reserve(int n) { v.reserve(n); }
+    void clear() { v.resize(1); }
+    int size() const { return siz(v) - 1; }
+    const T &operator[](int idx) const {
+        return ast(0 <= idx && idx <= size(), mp(idx, size())), v[idx];
+    }
+    T &operator[](int idx) {
+        return ast(0 <= idx && idx <= size(), mp(idx, size())), v[idx];
+    }
+    using const_iter = typename ::vector<T>::const_iterator;
+    using iter = typename ::vector<T>::iterator;
+    const_iter begin() const { return v.begin() + 1; }
+    iter begin() { return v.begin() + 1; }
+    const_iter end() const { return v.end(); }
+    iter end() { return v.end(); }
+    const T &front() const { return ast(size() > 0, "front"), v[1]; }
+    const T &back() const { return ast(size() > 0, "back"), v.back(); }
+    T &front() { return ast(size() > 0, "front"), v[1]; }
+    T &back() { return ast(size() > 0, "back"), v.back(); }
+    void push(const T &val) { v.push_back(val); }
+    void pop() { ast(size() > 0, "pop"), v.pop_back(); }
+    void erase(int l, int r) { v.erase(v.begin() + l, v.begin() + r + 1); }
+    void insert(int at, const T &val) { v.insert(v.begin() + at, val); }
+};
 
 void updmax(int &x, int y) { x = max(x, y); }
 void updmin(int &x, int y) { x = min(x, y); }
@@ -241,7 +201,8 @@ constexpr int inf = 0x3f3f3f3f3f3f3f3f;
 void task() {}
 
 sint main() {
-    int T = qread();
+    // int T = read();
+    int T = 1;
     while (T--) {
         task();
     }

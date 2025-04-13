@@ -17,17 +17,13 @@ pub fn compile(source: impl AsRef<Path>, executable: impl AsRef<Path>) -> eyre::
         source.display()
     );
 
+    let mut args = vec![source.as_os_str(), OsStr::new("-o"), executable.as_os_str()];
+    for flag in include_str!("gcc-flags").split_whitespace() {
+        args.push(OsStr::new(flag));
+    }
+
     let status = Command::new("g++")
-        .args([
-            source.as_os_str(),
-            OsStr::new("-O2"),
-            OsStr::new("-DDEBUG"),
-            OsStr::new("-o"),
-            executable.as_os_str(),
-            OsStr::new("-Wall"),
-            OsStr::new("-Wextra"),
-            OsStr::new("-std=c++14"),
-        ])
+        .args(&args)
         .stdout(stdout())
         .stdin(Stdio::null())
         .stderr(stderr())
